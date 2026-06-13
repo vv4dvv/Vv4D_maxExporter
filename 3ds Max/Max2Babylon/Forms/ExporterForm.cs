@@ -55,7 +55,7 @@ namespace Max2Babylon
             RegisterFilePostOpen();
 
             this.pictureBox1.Image = ResourceHelper.LoadImage("Max2Babylon.Resources.MaxExporter.png");
-            this.Text = $"Babylon.js - 导出场景到 babylon 或 glTF 格式 v{BabylonExporter.exporterVersion}";
+            this.Text = $"Babylon.js - 导出场景到 glTF/glb 格式 v{BabylonExporter.exporterVersion}";
 
             this.babylonExportAction = babylonExportAction;
 
@@ -85,7 +85,7 @@ namespace Max2Babylon
             Tools.PrepareCheckBox(chkAutoSave, Loader.Core.RootNode, "babylonjs_autosave", 1);
             Tools.PrepareCheckBox(chkOnlySelected, Loader.Core.RootNode, "babylonjs_onlySelected");
             Tools.PrepareCheckBox(chkExportTangents, Loader.Core.RootNode, "babylonjs_exporttangents");
-            Tools.PrepareComboBox(comboOutputFormat, Loader.Core.RootNode, "babylonjs_outputFormat", "babylon");
+            Tools.PrepareComboBox(comboOutputFormat, Loader.Core.RootNode, "babylonjs_outputFormat", "gltf");
             Tools.PrepareTextBox(txtScaleFactor, Loader.Core.RootNode, "babylonjs_txtScaleFactor", "1");
             Tools.PrepareTextBox(txtQuality, Loader.Core.RootNode, "babylonjs_txtCompression", "100");
             Tools.PrepareCheckBox(chkMergeAO, Loader.Core.RootNode, "babylonjs_mergeAOwithMR", 1);
@@ -106,7 +106,7 @@ namespace Max2Babylon
             Tools.PrepareCheckBox(chkApplyPreprocessToScene, Loader.Core.RootNode, "babylonjs_applyPreprocess", 0);
             
 
-            if (comboOutputFormat.SelectedText == "babylon" || comboOutputFormat.SelectedText == "binary babylon" || !gltfPipelineInstalled)
+            if (!gltfPipelineInstalled)
             {
                 chkDracoCompression.Checked = false;
                 chkDracoCompression.Enabled = false;
@@ -474,7 +474,6 @@ namespace Max2Babylon
                     overwriteTextures = chkOverwriteTextures.Checked,
                     exportHiddenObjects = chkHidden.Checked,
                     exportOnlySelected = chkOnlySelected.Checked,
-                    generateManifest = chkManifest.Checked,
                     autoSaveSceneFile = chkAutoSave.Checked,
                     exportTangents = chkExportTangents.Checked,
                     exportMorphTangents = chkExportMorphTangents.Checked,
@@ -489,16 +488,11 @@ namespace Max2Babylon
                     enableKHRMaterialsUnlit = chkKHRMaterialsUnlit.Checked,
                     exportMaterials = chkExportMaterials.Checked,
                     exportAnimations = chkExportAnimations.Checked,
-                    exportAnimationsOnly = chkExportAnimationsOnly.Checked,
                     optimizeAnimations = !chkDoNotOptimizeAnimations.Checked,
                     animgroupExportNonAnimated = chkAnimgroupExportNonAnimated.Checked,
                     exportNode = exportItem?.Node,
                     exportKeepNodePosition = exportItem?.KeepPosition??false,
                     exportLayers = exportItem?.Layers,
-                    pbrNoLight = chkNoAutoLight.Checked,
-                    pbrFull = chkFullPBR.Checked,
-                    pbrEnvironment = txtEnvironmentName.Text,
-                    usePreExportProcess = chkUsePreExportProces.Checked,
                     flattenScene = chkFlatten.Checked,
                     mergeContainersAndXRef = chkMrgContainersAndXref.Checked,
                     useMultiExporter = multiExport,
@@ -742,25 +736,6 @@ namespace Max2Babylon
             var outputFormat = comboOutputFormat.SelectedItem.ToString();
             switch (outputFormat)
             {
-                case "babylon":
-                case "binary babylon":
-                    this.saveFileDialog.DefaultExt = "babylon";
-                    this.saveFileDialog.Filter = "Babylon 文件|*.babylon";
-                    chkDracoCompression.Checked = false;
-                    chkDracoCompression.Enabled = false;
-                    chkWriteTextures.Enabled = true;
-                    chkOverwriteTextures.Enabled = true;
-                    txtTexturesPath.Text = string.Empty;
-                    txtTexturesPath.Enabled = false;
-                    textureLabel.Enabled = false;
-                    btnTxtBrowse.Enabled = false;
-                    chkFullPBR.Enabled = true;
-                    btnEnvBrowse.Enabled = true;
-                    txtEnvironmentName.Enabled = true;
-                    chkKHRMaterialsUnlit.Enabled = false;
-                    chkKHRLightsPunctual.Enabled = false;
-                    chkKHRTextureTransform.Enabled = false;
-                    break;
                 case "gltf":
                     this.saveFileDialog.DefaultExt = "gltf";
                     this.saveFileDialog.Filter = "glTF 文件|*.gltf";
@@ -770,11 +745,6 @@ namespace Max2Babylon
                     txtTexturesPath.Enabled = true;
                     textureLabel.Enabled = true;
                     btnTxtBrowse.Enabled = true;
-                    chkFullPBR.Enabled = false;
-                    chkFullPBR.Checked = false;
-                    btnEnvBrowse.Enabled = false;
-                    txtEnvironmentName.Enabled = false;
-                    txtEnvironmentName.Text = string.Empty;
                     chkKHRMaterialsUnlit.Enabled = true;
                     chkKHRLightsPunctual.Enabled = true;
                     chkKHRTextureTransform.Enabled = true;
@@ -791,11 +761,6 @@ namespace Max2Babylon
                     txtTexturesPath.Enabled = false;
                     textureLabel.Enabled = false;
                     btnTxtBrowse.Enabled = false;
-                    chkFullPBR.Enabled = false;
-                    chkFullPBR.Checked = false;
-                    btnEnvBrowse.Enabled = false;
-                    txtEnvironmentName.Enabled = false;
-                    txtEnvironmentName.Text = string.Empty;
                     chkKHRMaterialsUnlit.Enabled = true;
                     chkKHRLightsPunctual.Enabled = true;
                     chkKHRTextureTransform.Enabled = true;
@@ -854,7 +819,7 @@ namespace Max2Babylon
         {
             string outputFileExt;
             outputFileExt = comboOutputFormat.SelectedItem.ToString();
-            if (outputFileExt.Contains("binary babylon"))
+            if (false)
                 outputFileExt = "babylon";
 
             ExportItemList exportItemList = new ExportItemList(outputFileExt);

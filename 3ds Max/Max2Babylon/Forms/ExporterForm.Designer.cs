@@ -691,8 +691,6 @@ namespace Max2Babylon
 			// 
 			this.comboOutputFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.comboOutputFormat.Items.AddRange(new object[] {
-            "babylon",
-            "binary babylon",
             "gltf",
             "glb"});
 			this.comboOutputFormat.Location = new System.Drawing.Point(97, 3);

@@ -61,7 +61,7 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		..\SharedProjects\Babylon2GLTF\Babylon2GLTF.projitems*{6e9391a6-5f16-61f8-518f-ce10bf929703}*SharedItemsImports = 5
 		..\SharedProjects\BabylonExport.Entities\BabylonExport.Entities.projitems*{6e9391a6-5f16-61f8-518f-ce10bf929703}*SharedItemsImports = 5
-		..\SharedProjects\BabylonFileConverter\BabylonFileConverter.projitems*{6e9391a6-5f16-61f8-518f-ce10bf929703}*SharedItemsImports = 5
+
 		..\SharedProjects\GltfExport.Entities\GltfExport.Entities.projitems*{6e9391a6-5f16-61f8-518f-ce10bf929703}*SharedItemsImports = 5
 		..\SharedProjects\Utilities\Extensions.projitems*{6e9391a6-5f16-61f8-518f-ce10bf929703}*SharedItemsImports = 5
 	EndGlobalSection

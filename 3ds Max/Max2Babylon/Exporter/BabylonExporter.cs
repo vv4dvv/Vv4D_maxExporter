@@ -326,16 +326,13 @@ namespace Max2Babylon
             
             var outputBabylonDirectory = tempOutputDirectory;
 
-            // Force output file extension to be babylon
-            outputFileName = Path.ChangeExtension(outputFileName, "babylon");
-
             var babylonScene = new BabylonScene(outputBabylonDirectory);
 
             var rawScene = Loader.Core.RootNode;
 
             string outputFormat = exportParameters.outputFormat;
-            isBabylonExported = outputFormat == "babylon" || outputFormat == "binary babylon";
-            isGltfExported = outputFormat == "gltf" || outputFormat == "glb";
+            isBabylonExported = false;
+            isGltfExported = true;
 
             // Save scene
             if (exportParameters.autoSaveSceneFile)
@@ -462,16 +459,8 @@ namespace Max2Babylon
 
                     babylonScene.SoundsList.Add(globalSound);
 
-                    if (isBabylonExported)
-                    {
-                        try
-                        {
-                            File.Copy(soundName, Path.Combine(babylonScene.OutputPath, filename), true);
-                        }
-                        catch
-                        {
-                        }
-                    }
+
+
                 }
             }
 
@@ -798,59 +787,20 @@ namespace Max2Babylon
                         "{\r\n\"version\" : 1,\r\n\"enableSceneOffline\" : true,\r\n\"enableTexturesOffline\" : true\r\n}");
                 }
 
-                // Binary
-                if (outputFormat == "binary babylon")
-                {
-                    RaiseMessage("Generating binary files");
-                    BabylonFileConverter.BinaryConverter.Convert(outputFile, outputBabylonDirectory + "\\Binary",
-                        message => RaiseMessage(message, 1),
-                        error => RaiseError(error, 1));
-                }
+
+
             }
 
             ReportProgressChanged(100);
 
             // Export glTF
-            if (isGltfExported)
-            {
-                bool generateBinary = outputFormat == "glb";
+            bool generateBinary = outputFormat == "glb";
 
-                GLTFExporter gltfExporter = new GLTFExporter();
-                exportParameters.customGLTFMaterialExporter = new MaxGLTFMaterialExporter(exportParameters, gltfExporter, this);
-                gltfExporter.ExportGltf(this.exportParameters, babylonScene, tempOutputDirectory, outputFileName, generateBinary, this);
-            }
+            GLTFExporter gltfExporter = new GLTFExporter();
+            exportParameters.customGLTFMaterialExporter = new MaxGLTFMaterialExporter(exportParameters, gltfExporter, this);
+            gltfExporter.ExportGltf(this.exportParameters, babylonScene, tempOutputDirectory, outputFileName, generateBinary, this);
             // Move files to output directory
             var filePaths = Directory.GetFiles(tempOutputDirectory);
-            if (outputFormat == "binary babylon")
-            {
-                var tempBinaryOutputDirectory = Path.Combine(tempOutputDirectory, "Binary");
-                var binaryFilePaths = Directory.GetFiles(tempBinaryOutputDirectory);
-                foreach(var filePath in binaryFilePaths)
-                {
-                    if (filePath.EndsWith(".binary.babylon"))
-                    {
-                        var file = Path.GetFileName(filePath);
-                        var tempFilePath = Path.Combine(tempBinaryOutputDirectory, file);
-                        var outputFile = Path.Combine(outputDirectory, file);
-
-                        IUTF8Str maxNotification = GlobalInterface.Instance.UTF8Str.Create(outputFile);
-                        Loader.Global.BroadcastNotification(SystemNotificationCode.PreExport, maxNotification);
-                        moveFileToOutputDirectory(tempFilePath, outputFile, exportParameters);
-                        Loader.Global.BroadcastNotification(SystemNotificationCode.PostExport, maxNotification);
-                    }
-                    else if (filePath.EndsWith(".babylonbinarymeshdata"))
-                    {
-                        var file = Path.GetFileName(filePath);
-                        var tempFilePath = Path.Combine(tempBinaryOutputDirectory, file);
-                        var outputFile = Path.Combine(outputDirectory, file);
-
-                        IUTF8Str maxNotification = GlobalInterface.Instance.UTF8Str.Create(outputFile);
-                        Loader.Global.BroadcastNotification(SystemNotificationCode.PreExport, maxNotification);
-                        moveFileToOutputDirectory(tempFilePath, outputFile, exportParameters);
-                        Loader.Global.BroadcastNotification(SystemNotificationCode.PostExport, maxNotification);
-                    }
-                }
-            }
             if (outputFormat == "glb")
             {
                 foreach (var file_path in filePaths)

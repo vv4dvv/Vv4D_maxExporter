@@ -207,7 +207,7 @@
   </ItemGroup>
   
   <Import Project="..\..\SharedProjects\BabylonExport.Entities\BabylonExport.Entities.projitems" Label="Shared" />
-  <Import Project="..\..\SharedProjects\BabylonFileConverter\BabylonFileConverter.projitems" Label="Shared" />
+
   <Import Project="..\..\SharedProjects\GltfExport.Entities\GltfExport.Entities.projitems" Label="Shared" />
   <Import Project="..\..\SharedProjects\Babylon2GLTF\Babylon2GLTF.projitems" Label="Shared" />
   <Import Project="..\..\SharedProjects\Utilities\Extensions.projitems" Label="Shared" />
