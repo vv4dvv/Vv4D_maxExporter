@@ -43,12 +43,12 @@ namespace Max2Babylon
 
         public override string ButtonText
         {
-            get { return "Vv4D 文件导出器"; }
+            get { return "文件导出器"; }
         }
 
         public override string MenuText
         {
-            get { return "Vv4D 文件导出器(&V)..."; }
+            get { return "文件导出器(&V)..."; }
         }
 
         public override string DescriptionText

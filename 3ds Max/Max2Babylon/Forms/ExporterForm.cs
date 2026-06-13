@@ -54,7 +54,7 @@ namespace Max2Babylon
             InitializeComponent();
             RegisterFilePostOpen();
 
-            this.pictureBox1.Image = ResourceHelper.LoadImage("Max2Babylon.Resources.vv4d.png");
+            this.pictureBox1.Visible = false;
             this.Text = $"Vv4D - 导出场景到 glTF/glb 格式 v{BabylonExporter.exporterVersion}";
 
             this.babylonExportAction = babylonExportAction;
