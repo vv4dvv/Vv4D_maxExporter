@@ -17,7 +17,7 @@ version:1
 )
 
 
--- Add Babylon Attributes to all materials used in the scene
+-- Add Babylon Attributes to all materials used in t1he scene
 for mat in scenematerials do
 (
 	print ("Adding attributes to " + mat.name)

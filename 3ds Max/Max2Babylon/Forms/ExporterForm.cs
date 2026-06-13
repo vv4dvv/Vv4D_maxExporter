@@ -54,7 +54,7 @@ namespace Max2Babylon
             InitializeComponent();
             RegisterFilePostOpen();
 
-            this.pictureBox1.Image = ResourceHelper.LoadImage("Max2Babylon.Resources.vv4d.png");
+            this.pictureBox1.Image = ResourceHelper.LoadImage("Max2Babylon.Resources.Vv4D256.png");
             this.Text = $"Vv4D - 导出场景到 glTF/glb 格式 v{BabylonExporter.exporterVersion}";
 
             this.babylonExportAction = babylonExportAction;
@@ -149,16 +149,20 @@ namespace Max2Babylon
         {
             LoadOptions();
 
-            // Auto-fill model path from current 3ds Max scene
+            // Auto-fill model path from current 3ds Max scene file
             if (string.IsNullOrWhiteSpace(txtModelPath.Text))
             {
                 try
                 {
-                    var maxFilePath = Loader.Core.GetDir((int)MaxDirectory.ProjectFolder);
+                    string maxFilePath = Loader.Core.CurFilePath;
                     if (!string.IsNullOrEmpty(maxFilePath))
                     {
-                        var glbPath = Path.Combine(maxFilePath, "untitled.glb");
-                        txtModelPath.MaxPath(glbPath);
+                        string defaultExt = comboOutputFormat.SelectedItem?.ToString() ?? "glb";
+                        string modelPath = Path.ChangeExtension(maxFilePath, defaultExt);
+                        txtModelPath.MaxPath(modelPath);
+                        // Set texture path to model directory
+                        string texDir = Path.GetDirectoryName(modelPath);
+                        txtTexturesPath.MaxPath(texDir);
                     }
                 }
                 catch { }
