@@ -52,22 +52,22 @@ namespace Max2Babylon
 
         public override string ButtonText
         {
-            get { return "Babylon 属性"; }
+            get { return "Vv4D 属性"; }
         }
 
         public override string MenuText
         {
-            get { return "Babylon 属性"; }
+            get { return "Vv4D 属性"; }
         }
 
         public override string DescriptionText
         {
-            get { return "Babylon - 设置特定属性"; }
+            get { return "Vv4D - 设置特定属性"; }
         }
 
         public override string CategoryText
         {
-            get { return "Babylon"; }
+            get { return "Vv4D"; }
         }
 
         public override bool IsChecked_

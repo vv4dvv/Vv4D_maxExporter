@@ -63,22 +63,22 @@ namespace Max2Babylon
 
 		public override string ButtonText
 		{
-			get { return "Babylon 动画组"; }
+			get { return "Vv4D 动画组"; }
 		}
 
 		public override string MenuText
 		{
-			get { return "Babylon 动画组(&B)"; }
+			get { return "Vv4D 动画组(&V)"; }
 		}
 
 		public override string DescriptionText
 		{
-			get { return "Babylon - 管理场景动画组"; }
+			get { return "Vv4D - 管理场景动画组"; }
 		}
 
 		public override string CategoryText
 		{
-			get { return "Babylon"; }
+			get { return "Vv4D"; }
 		}
 
 		public override bool IsChecked_

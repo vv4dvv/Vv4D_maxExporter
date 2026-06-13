@@ -93,9 +93,9 @@ namespace Max2Babylon.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap MaxExporter {
+        internal static System.Drawing.Bitmap vv4d {
             get {
-                object obj = ResourceManager.GetObject("MaxExporter", resourceCulture);
+                object obj = ResourceManager.GetObject("vv4d", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

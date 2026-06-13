@@ -21,7 +21,7 @@ namespace Max2Babylon
         {
             get
             {
-                return "Babylon File Exporter";
+                return "Vv4D 文件导出器";
             }
         }
 
@@ -45,7 +45,7 @@ namespace Max2Babylon
         {
             get
             {
-                return "Babylon";
+                return "Vv4D";
             }
         }
 

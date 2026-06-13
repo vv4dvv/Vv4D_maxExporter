@@ -203,7 +203,7 @@
     <EmbeddedResource Include="Scripts\PHYSICAL_MATERIAL_CAT_DEF.ms" />
     <EmbeddedResource Include="Scripts\STANDARD_MATERIAL_CAT_DEF.ms" />
     <EmbeddedResource Include="Scripts\CreateBabylonMenus.ms" />
-    <EmbeddedResource Include="Resources\MaxExporter.png" />
+    <EmbeddedResource Include="Resources\vv4d.png" />
   </ItemGroup>
   
   <Import Project="..\..\SharedProjects\BabylonExport.Entities\BabylonExport.Entities.projitems" Label="Shared" />

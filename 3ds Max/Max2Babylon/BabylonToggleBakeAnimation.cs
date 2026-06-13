@@ -58,7 +58,7 @@ namespace Max2Babylon
 
         public override string CategoryText
         {
-            get { return "Babylon"; }
+            get { return "Vv4D"; }
         }
 
         public override bool IsChecked_

@@ -54,8 +54,8 @@ namespace Max2Babylon
             InitializeComponent();
             RegisterFilePostOpen();
 
-            this.pictureBox1.Image = ResourceHelper.LoadImage("Max2Babylon.Resources.MaxExporter.png");
-            this.Text = $"Babylon.js - 导出场景到 glTF/glb 格式 v{BabylonExporter.exporterVersion}";
+            this.pictureBox1.Image = ResourceHelper.LoadImage("Max2Babylon.Resources.vv4d.png");
+            this.Text = $"Vv4D - 导出场景到 glTF/glb 格式 v{BabylonExporter.exporterVersion}";
 
             this.babylonExportAction = babylonExportAction;
 
@@ -85,11 +85,11 @@ namespace Max2Babylon
             Tools.PrepareCheckBox(chkAutoSave, Loader.Core.RootNode, "babylonjs_autosave", 1);
             Tools.PrepareCheckBox(chkOnlySelected, Loader.Core.RootNode, "babylonjs_onlySelected");
             Tools.PrepareCheckBox(chkExportTangents, Loader.Core.RootNode, "babylonjs_exporttangents");
-            Tools.PrepareComboBox(comboOutputFormat, Loader.Core.RootNode, "babylonjs_outputFormat", "gltf");
+            Tools.PrepareComboBox(comboOutputFormat, Loader.Core.RootNode, "babylonjs_outputFormat", "glb");
             Tools.PrepareTextBox(txtScaleFactor, Loader.Core.RootNode, "babylonjs_txtScaleFactor", "1");
             Tools.PrepareTextBox(txtQuality, Loader.Core.RootNode, "babylonjs_txtCompression", "100");
             Tools.PrepareCheckBox(chkMergeAO, Loader.Core.RootNode, "babylonjs_mergeAOwithMR", 1);
-            Tools.PrepareCheckBox(chkDracoCompression, Loader.Core.RootNode, "babylonjs_dracoCompression", 0);
+            Tools.PrepareCheckBox(chkDracoCompression, Loader.Core.RootNode, "babylonjs_dracoCompression", 1);
             Tools.PrepareCheckBox(chkKHRLightsPunctual, Loader.Core.RootNode, "babylonjs_khrLightsPunctual");
             Tools.PrepareCheckBox(chkKHRTextureTransform, Loader.Core.RootNode, "babylonjs_khrTextureTransform");
             Tools.PrepareCheckBox(chkAnimgroupExportNonAnimated, Loader.Core.RootNode, "babylonjs_animgroupexportnonanimated");
@@ -148,6 +148,21 @@ namespace Max2Babylon
         private void ExporterForm_Load(object sender, EventArgs e)
         {
             LoadOptions();
+
+            // Auto-fill model path from current 3ds Max scene
+            if (string.IsNullOrWhiteSpace(txtModelPath.Text))
+            {
+                try
+                {
+                    var maxFilePath = Loader.Core.GetDir((int)MaxDirectory.ProjectFolder);
+                    if (!string.IsNullOrEmpty(maxFilePath))
+                    {
+                        var glbPath = Path.Combine(maxFilePath, "untitled.glb");
+                        txtModelPath.MaxPath(glbPath);
+                    }
+                }
+                catch { }
+            }
 
             var maxVersion = Tools.GetMaxVersion();
             if (maxVersion.Major == 22 && maxVersion.Minor < 2)

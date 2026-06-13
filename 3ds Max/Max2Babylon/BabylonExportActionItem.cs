@@ -43,22 +43,22 @@ namespace Max2Babylon
 
         public override string ButtonText
         {
-            get { return "Babylon 文件导出器"; }
+            get { return "Vv4D 文件导出器"; }
         }
 
         public override string MenuText
         {
-            get { return "Babylon 文件导出器(&B)..."; }
+            get { return "Vv4D 文件导出器(&V)..."; }
         }
 
         public override string DescriptionText
         {
-            get { return "Babylon - 生成 babylon.js 场景文件"; }
+            get { return "Vv4D - 导出场景到 glTF/glb 格式"; }
         }
 
         public override string CategoryText
         {
-            get { return "Babylon"; }
+            get { return "Vv4D"; }
         }
 
         public override bool IsChecked_
