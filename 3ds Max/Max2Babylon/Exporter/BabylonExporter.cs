@@ -464,6 +464,9 @@ namespace Max2Babylon
                 }
             }
 
+            // Stamp group names on nodes for export
+            StampGroupNames();
+
             // Root nodes
             RaiseMessage("Exporting nodes");
             // prepare all the hierarchy branch, or the branch where we have selected nodes (if Export Only Selected options set to true)
@@ -856,6 +859,46 @@ namespace Max2Babylon
                 }
             }
             ScriptsUtilities.ExecuteMaxScriptCommand(@"global BabylonExporterStatus = ""Available""");
+        }
+
+        /// <summary>
+        /// Run MaxScript to stamp group names on each node's user property
+        /// so they can be read during mesh export.
+        /// </summary>
+        private void StampGroupNames()
+        {
+            try
+            {
+                string maxScript = @"
+                (
+                    -- Clear previous stamps
+                    for n in objects do setUserProp n ""vv4d_groupNames"" """"
+                    -- For each group, stamp all members with group hierarchy names
+                    for g in groups do (
+                        -- collect group hierarchy names (self + parent groups)
+                        local groupNames = #()
+                        local grp = g
+                        while grp != undefined do (
+                            if isGroupHead grp then append groupNames grp.name
+                            grp = grp.parent
+                        )
+                        local jsonArr = ""[""
+                        for i = 1 to groupNames.count do (
+                            if i > 1 then jsonArr += "",""
+                            jsonArr += ""\"""" + groupNames[i] + ""\""""
+                        )
+                        jsonArr += ""]""
+                        for n in g do setUserProp n ""vv4d_groupNames"" jsonArr
+                    )
+                )
+                ";
+                ScriptsUtilities.ExecuteMaxScriptCommand(maxScript);
+                RaiseMessage("Group names stamped on nodes", 2);
+            }
+            catch (Exception ex)
+            {
+                RaiseWarning("Failed to stamp group names: " + ex.Message);
+            }
         }
 
         private void moveFileToOutputDirectory(string sourceFilePath, string targetFilePath, ExportParameters exportParameters)

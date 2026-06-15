@@ -656,6 +656,17 @@ namespace Babylon2GLTF
 
             ExportGLTFExtension(babylonMesh, ref gltfMesh,gltf);
 
+            // Transfer babylonMesh metadata to gltfMesh.extras
+            if (babylonMesh.metadata != null && babylonMesh.metadata.Count > 0)
+            {
+                if (gltfMesh.extras == null)
+                    gltfMesh.extras = new Dictionary<string, object>();
+                foreach (var kvp in babylonMesh.metadata)
+                {
+                    gltfMesh.extras[kvp.Key] = kvp.Value;
+                }
+            }
+
             return gltfMesh;
         }
 

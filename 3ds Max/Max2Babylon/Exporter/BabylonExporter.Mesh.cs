@@ -165,6 +165,9 @@ namespace Max2Babylon
             // append userData to extras
             ExportUserData(meshNode, babylonMesh);
 
+            // Export group names as userData.groupNames
+            ExportGroupNames(meshNode, babylonMesh);
+
             // Sounds
             var soundName = meshNode.MaxNode.GetStringProperty("babylonjs_sound_filename", "");
             if (!string.IsNullOrEmpty(soundName))
@@ -780,6 +783,31 @@ namespace Max2Babylon
                 {
                     RaiseWarning("Failed to parse user defined properties: " + userProp, 2);
                 }
+            }
+        }
+
+        private void ExportGroupNames(IIGameNode meshNode, BabylonAbstractMesh babylonMesh)
+        {
+            try
+            {
+                string groupNamesStr = "";
+                meshNode.MaxNode.GetUserPropString("vv4d_groupNames", ref groupNamesStr);
+                if (!string.IsNullOrEmpty(groupNamesStr))
+                {
+                    var groupNames = Newtonsoft.Json.JsonConvert.DeserializeObject<string[]>(groupNamesStr);
+                    if (groupNames != null && groupNames.Length > 0)
+                    {
+                        if (babylonMesh.metadata == null)
+                            babylonMesh.metadata = new Dictionary<string, object>();
+                        var userData = new Dictionary<string, object>();
+                        userData["groupNames"] = groupNames;
+                        babylonMesh.metadata["userData"] = userData;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // silently ignore group name extraction failures
             }
         }
 
