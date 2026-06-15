@@ -862,7 +862,7 @@ namespace Max2Babylon
         }
 
         /// <summary>
-        /// Run MaxScript to stamp group names on each node's user property
+        /// Run MaxScript to stamp selection set names on each node's user property
         /// so they can be read during mesh export.
         /// </summary>
         private void StampGroupNames()
@@ -873,31 +873,35 @@ namespace Max2Babylon
                 (
                     -- Clear previous stamps
                     for n in objects do setUserProp n ""vv4d_groupNames"" """"
-                    -- For each group, stamp all members with group hierarchy names
-                    for g in groups do (
-                        -- collect group hierarchy names (self + parent groups)
-                        local groupNames = #()
-                        local grp = g
-                        while grp != undefined do (
-                            if isGroupHead grp then append groupNames grp.name
-                            grp = grp.parent
+                    -- For each selection set, stamp members with the set name
+                    if selectionSets.count > 0 then (
+                        for s = 1 to selectionSets.count do (
+                            local sname = selectionSets[s].name
+                            for m = 1 to selectionSets[s].count do (
+                                local obj = selectionSets[s][m]
+                                local existing = getUserProp obj ""vv4d_groupNames""
+                                if existing == undefined then existing = """"
+                                if existing != """" then existing += "",""
+                                existing += ""\"""" + sname + ""\""""
+                                setUserProp obj ""vv4d_groupNames"" existing
+                            )
                         )
-                        local jsonArr = ""[""
-                        for i = 1 to groupNames.count do (
-                            if i > 1 then jsonArr += "",""
-                            jsonArr += ""\"""" + groupNames[i] + ""\""""
+                        -- Wrap in array brackets
+                        for n in objects do (
+                            local existing = getUserProp n ""vv4d_groupNames""
+                            if existing != undefined and existing != """" then (
+                                setUserProp n ""vv4d_groupNames"" (""["" + existing + ""]"")
+                            )
                         )
-                        jsonArr += ""]""
-                        for n in g do setUserProp n ""vv4d_groupNames"" jsonArr
                     )
                 )
                 ";
                 ScriptsUtilities.ExecuteMaxScriptCommand(maxScript);
-                RaiseMessage("Group names stamped on nodes", 2);
+                RaiseMessage("Selection set names stamped on nodes", 2);
             }
             catch (Exception ex)
             {
-                RaiseWarning("Failed to stamp group names: " + ex.Message);
+                RaiseWarning("Failed to stamp selection set names: " + ex.Message);
             }
         }
 

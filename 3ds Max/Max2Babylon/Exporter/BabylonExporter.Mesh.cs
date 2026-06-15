@@ -799,9 +799,7 @@ namespace Max2Babylon
                     {
                         if (babylonMesh.metadata == null)
                             babylonMesh.metadata = new Dictionary<string, object>();
-                        var userData = new Dictionary<string, object>();
-                        userData["groupNames"] = groupNames;
-                        babylonMesh.metadata["userData"] = userData;
+                        babylonMesh.metadata["selectionSets"] = groupNames;
                     }
                 }
             }
